@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 '''Defines the BaseModel class'''
 
+import models
 from uuid import uuid4
 from datetime import datetime
 
 
 class BaseModel():
     '''BaseModel class'''
-    def __init__(selfi, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         '''Initialize a new BaseModel'''
         timefmt = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
@@ -20,6 +21,8 @@ class BaseModel():
                     self.__dict__[key] = datetime.strptime(value, timefmt)
                 else:
                     self.__dict__[key] = value
+        else:
+            models.storage.new(self)
 
     def __str__(self):
         '''returns the string representation of the BaseModel instance'''
@@ -30,6 +33,7 @@ class BaseModel():
         '''updates the public instance attribute
         updated_at with the current datetime'''
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         '''returns a dictionary containing all keys/values
