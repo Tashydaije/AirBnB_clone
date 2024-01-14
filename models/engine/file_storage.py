@@ -37,4 +37,3 @@ class FileStorage:
                     self.new(eval(clsname)(**o))
         except FileNotFoundError:
             return
-
