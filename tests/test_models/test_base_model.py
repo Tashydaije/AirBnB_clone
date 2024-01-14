@@ -50,9 +50,9 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(self.base_kwargs.created_at, datetime)
         self.assertIsInstance(self.base_kwargs.updated_at, datetime)
         self.assertEqual(self.base_kwargs.created_at,
-                datetime.fromisoformat(exp_kwargs['created_at']))
+                         datetime.fromisoformat(exp_kwargs['created_at']))
         self.assertEqual(self.base_kwargs.updated_at,
-                datetime.fromisoformat(exp_kwargs['updated_at']))
+                         datetime.fromisoformat(exp_kwargs['updated_at']))
 
     def test_args_unused(self):
         bm = BaseModel(None)
@@ -64,7 +64,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(self.bm_str, BaseModel)
         self.assertTrue(hasattr(BaseModel.__dict__, "__str__"))
         self.assertEqual(self.bm_str.__str__(),
-                "[{}] ({}) {}".format(
+                         "[{}] ({}) {}".format(
                     self.bm_str.__class__.__name__,
                     self.bm_str.id,
                     self.bm_str.__dict__
