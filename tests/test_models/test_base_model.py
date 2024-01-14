@@ -36,6 +36,28 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(self.bm_updated_at, "updated_at"))
         self.assertIsInstance(self.bm_updated_at.updated_at, datetime)
 
+    def test_kwargs(self):
+        ''' Test case for objects instanciated from **kwargs '''
+        exp_kwargs = {
+                "id": 'eb78b0b0-e3e4-6bbc-a5e1-60002edc3c7e',
+                "created_at": '2005-01-17T12:30:34.884906',
+                "updated_at": '2020-07-20T06:25:58.906884'
+        }
+        self.base_kwargs = BaseModel(**exp_kwargs)
+        self.assertIsInstance(self.base_kwargs, BaseModel)
+        self.assertEqual(self.base_kwargs.__class__.__name__, "BaseModel")
+        self.assertEqual(self.base_kwargs.id, exp_kwargs['id'])
+        self.assertIsInstance(self.base_kwargs.created_at, datetime)
+        self.assertIsInstance(self.base_kwargs.updated_at, datetime)
+        self.assertEqual(self.base_kwargs.created_at,
+                datetime.fromisoformat(exp_kwargs['created_at']))
+        self.assertEqual(self.base_kwargs.updated_at,
+                datetime.fromisoformat(exp_kwargs['updated_at']))
+
+    def test_args_unused(self):
+        bm = BaseModel(None)
+        self.assertNotIn(None, bm.__dict__.values())
+
     def test_str(self):
         '''test __str__ function'''
         self.bm_str = BaseModel()
