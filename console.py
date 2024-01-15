@@ -3,6 +3,10 @@
 import cmd
 from models.base_model import BaseModel
 from shlex import split
+from models import storage
+from models.engine.file_storage import FileStorage
+from models import base_model
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
         prompt (str): the command prompt
     '''
     prompt = "(hbnb) "
-    __classes = {
+    classes = {
         "BaseModel",
     }
 
@@ -40,14 +44,14 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        new_instance = self.classes[class_name]()
+        new_instance = getattr(base_model, class_name)()
         new_instance.save()
         print(new_instance.id)
 
     def do_show(self, arg):
         '''Prints the string repn of an instance based
         on the class name & id'''
-        args = splits(arg)
+        args = split(arg)
         if not args:
             print("** class name missing **")
             return
@@ -60,8 +64,8 @@ class HBNBCommand(cmd.Cmd):
             return
         instance_id = args[1]
         key = class_name + '.' + instance_id
-        if key in BaseModel.__objects:
-            print(BaseModel.__objectsl[key])
+        if key in storage.all():
+            print(storage.all()[key])
         else:
             print("** no instance found **")
 
@@ -80,9 +84,9 @@ class HBNBCommand(cmd.Cmd):
             return
         instance_id = args[1]
         key = class_name + '.' + instance_id
-        if key in BaseModel.__objects:
-            del BaseModel.__objects[key]
-            BaseModel.save_to_file()
+        if key in storage.all():
+            del storage.all()[key]
+            storage.save()
         else:
             print("** no instance found **")
 
@@ -90,11 +94,12 @@ class HBNBCommand(cmd.Cmd):
         '''Prints all string representation of all
         instances based or not on the class name.'''
         args = split(arg)
+        instance = storage.all()
         if args and args[0] not in self.classes:
             print("** class doesn't exist **")
             return
-        instance = []
-        for key, value in BaseModel.__objects.items():
+        instances = []
+        for key, value in instance.items():
             if not args or args[0] == value.__class__.__name__:
                 instances.append(str(value))
         print(instances)
@@ -115,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
             return
         instance_id = args[1]
         key = class_name + '.' + instance_id
-        if key not in BaseModel.__objects:
+        if key not in storage.all():
             print("** no instance found **")
             return
         if len(args) < 3:
@@ -126,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
         attribute_value = args[3]
-        instance = BaseModel.__objects[key]
+        instance = storage.all()[key]
         setattr(instance, attribute_name, attribute_value)
         instance.updated_at = datetime.now()
         instance.save()

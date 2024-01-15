@@ -3,10 +3,21 @@
 
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
-    ''' Represents the storage engine '''
+    ''' Represents the storage engine
+
+    Attributes:
+        __file_path (str): name of the file to save objects to
+        __objects (dict): dictionary for objects storing
+    '''
     __file_path = "file.json"
     __objects = {}
 
