@@ -34,7 +34,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         '''Quit command to exit program'''
         return True
-    
+
     def do_EOF(self, arg):
         '''EOF signal to exit program'''
         print("")
@@ -147,5 +147,5 @@ class HBNBCommand(cmd.Cmd):
         instance.updated_at = datetime.now()
         instance.save()
 
-if __name__ == '__main__':
-    HBNBCommand().cmdloop()
+    if __name__ == '__main__':
+        HBNBCommand().cmdloop()
