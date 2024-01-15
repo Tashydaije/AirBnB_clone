@@ -4,7 +4,6 @@ import cmd
 from models.base_model import BaseModel
 from shlex import split
 from models import storage
-from models.engine.file_storage import FileStorage
 from models import base_model
 from datetime import datetime
 from models.user import User
