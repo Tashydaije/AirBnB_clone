@@ -147,5 +147,6 @@ class HBNBCommand(cmd.Cmd):
         instance.updated_at = datetime.now()
         instance.save()
 
-    if __name__ == '__main__':
-        HBNBCommand().cmdloop()
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
