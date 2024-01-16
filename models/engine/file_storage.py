@@ -20,6 +20,15 @@ class FileStorage:
     '''
     __file_path = "file.json"
     __objects = {}
+    _valid_classes = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Place": Place,
+            "Review": Review
+            }
 
     def all(self):
         ''' Returns dictionary objects '''
@@ -45,6 +54,7 @@ class FileStorage:
                 for o in objdict.values():
                     clsname = o["__class__"]
                     del o["__class__"]
-                    self.new(eval(clsname)(**o))
+                    if clsname in self._valid_classes:
+                        self.new(eval(clsname)(**o))
         except FileNotFoundError:
             return
